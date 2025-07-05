@@ -19,6 +19,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(morgan("dev"));
+app.get("/", (req, res) => {
+      res.send("✅ Event Management API is Live!");
+    });
 app.use("/api/events", eventRoutes);
 app.use("/api/auth", authRoutes);
 app.use(errorHandler); 

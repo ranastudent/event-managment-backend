@@ -20,9 +20,7 @@ mongoose
     app.listen(PORT, () => {
       console.log(`🚀 Server running on http://localhost:${PORT}`);
     });
-    app.get("/", (req, res) => {
-      res.send("✅ Event Management API is Live!");
-    });
+    
   })
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err.message);
