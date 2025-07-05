@@ -4,6 +4,9 @@ import moment from "moment";
 import { AuthRequest } from "../middlewares/auth.middleware";
 import mongoose from "mongoose";
 import { createEventSchema } from "../validators/event.validator";
+import { sendResponse } from "../app/utils/sendResponse";
+
+
 
 export const addEvent = async (
   req: AuthRequest,
@@ -11,8 +14,6 @@ export const addEvent = async (
 ): Promise<void> => {
   console.log("🟡 Entered addEvent route");
   try {
-   
-
     console.log("BODY: ", req.body);
     console.log("USER ID: ", req.userId);
     const { title, name, dateTime, location, description } = req.body;
@@ -29,20 +30,20 @@ export const addEvent = async (
       location,
       description,
       attendeeCount: 0,
-      createdBy: req.userId, // set from JWT middleware
+      createdBy: req.userId,
     });
 
-    res.status(201).json({
-      message: "Event created successfully",
-      event: newEvent,
-    });
+    // ✅ Use utility function here
+    sendResponse(res, 201, "Event created successfully", newEvent);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
+
 export const getEvents = async (req: Request, res: Response): Promise<void> => {
   try {
+    
     const { search, filter } = req.query;
 
     const query: any = {};

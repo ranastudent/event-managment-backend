@@ -1,4 +1,3 @@
-// src/models/user.model.ts
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
@@ -6,6 +5,11 @@ export interface IUser extends Document {
   email: string;
   password: string;
   photoUrl: string;
+  role: "admin" | "user"; // 👈 Role
+  isVerified: boolean;
+  verificationToken?: string;
+  resetToken?: String ;
+  resetTokenExpiry?: Date ;
 }
 
 const userSchema = new Schema<IUser>(
@@ -13,7 +17,17 @@ const userSchema = new Schema<IUser>(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    photoUrl: { type: String },
+    photoUrl: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ["admin", "user"],
+      default: "user",
+      select: true,
+    }, // 👈 Added here
+    isVerified: { type: Boolean, default: false },
+    verificationToken: { type: String },
+    resetToken: { type: String, required:false },
+    resetTokenExpiry: { type: Date, required:false },
   },
   { timestamps: true }
 );

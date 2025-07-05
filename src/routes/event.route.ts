@@ -12,24 +12,29 @@ import { createEventSchema, getEventsQuerySchema } from "../validators/event.val
 import { updateEventSchema } from "../validators/event.validator";
 import { validateObjectIdParam } from "../middlewares/paramValidator";
 import { validateQuery } from "../middlewares/validateQuery";
+import { authorizeRole } from "../middlewares/authorizeRole";
+import { checkVerifiedUser } from "../middlewares/checkVerifiedUser";
 
 const router = express.Router();
 
 router.post(
   "/add",
   authenticateJWT,
+  authorizeRole("admin"),
+  checkVerifiedUser,
   validateRequest(createEventSchema),
-  addEvent
+  addEvent,
+  
 );
-router.get("/", authenticateJWT, validateQuery(getEventsQuerySchema), getEvents);
-router.post("/join/:id", authenticateJWT, validateObjectIdParam, joinEvent);
+router.get("/", authenticateJWT,checkVerifiedUser, validateQuery(getEventsQuerySchema), getEvents);
+router.post("/join/:id", authenticateJWT,checkVerifiedUser, validateObjectIdParam, joinEvent);
 router.patch(
   "/:id",
-  authenticateJWT,
+  authenticateJWT, checkVerifiedUser, authorizeRole("admin"),
   validateObjectIdParam,
   validateRequest(updateEventSchema),
-  updateEvent
+  updateEvent,
 );
-router.delete("/:id", authenticateJWT, validateObjectIdParam, deleteEvent);
+router.delete("/:id", authenticateJWT, checkVerifiedUser, authorizeRole("admin"), validateObjectIdParam, deleteEvent,);
 
 export default router;
