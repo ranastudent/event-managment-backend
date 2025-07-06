@@ -13,8 +13,7 @@ export const sendVerificationEmail = async (
       },
     });
 
-    const verificationUrl = `http://localhost:5000/api/auth/verify-email?token=${token}`;
-
+    const verificationUrl = `https://event-managment-backend.vercel.app/api/auth/verify-email?token=${token}`;
     const mailOptions = {
       from: `"Event App" <${process.env.EMAIL_USER}>`,
       to: email,

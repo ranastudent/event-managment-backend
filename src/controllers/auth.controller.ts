@@ -195,9 +195,7 @@ export const verifyEmail = async (
     // ❌ Delete from pending
     await pendingUser.deleteOne();
 
-    res
-      .status(200)
-      .json({ message: "Email verified successfully. You can now login." });
+   res.redirect("https://event-management-client.vercel.app/login?verified=true");
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
